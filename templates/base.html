@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ title }}</title>
+<meta name="description" content="{{ desc }}">
+<link rel="canonical" href="{{ site.base_url }}{{ path }}">
+<meta property="og:type" content="{{ og_type|default('website') }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ desc }}">
+<meta property="og:url" content="{{ site.base_url }}{{ path }}">
+<meta property="og:image" content="{{ site.base_url }}{{ og_image|default('/static/og.jpg') }}">
+<meta property="og:site_name" content="ETOI">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="ETOI" href="{{ root }}feed.xml">
+<link rel="icon" href="{{ root }}static/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ root }}static/style.css?v={{ ver }}">
+{% if site.ga_id %}<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga_id }}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','{{ site.ga_id }}');</script>{% endif %}
+{% block head %}{% endblock %}
+</head>
+<body class="{{ body_class|default('') }}">
+<header class="hd">
+  <div class="hd-in">
+    <a class="logo" href="{{ root }}">ETOI<span>エトワ</span></a>
+    <nav class="nav">
+      <a href="{{ root }}works/">読み解き</a>
+      <a href="{{ root }}themes/">悩みから探す</a>
+      <a href="{{ root }}shindan/">一枚診断</a>
+      <a href="{{ root }}about/">ETOIについて</a>
+    </nav>
+  </div>
+</header>
+<main>
+{% block main %}{% endblock %}
+</main>
+<footer class="ft">
+  <div class="ft-in">
+    <div class="ft-brand"><div class="logo">ETOI</div><p>{{ site.tagline }}</p></div>
+    <div class="ft-links">
+      <a href="{{ root }}works/">読み解き一覧</a><a href="{{ root }}themes/">悩みから探す</a><a href="{{ root }}shindan/">一枚診断</a>
+      <a href="{{ root }}about/">ETOIについて</a><a href="{{ root }}policy/">編集方針・広告表記</a><a href="{{ root }}privacy/">プライバシーポリシー</a>
+      <a href="{{ site.instagram }}" rel="noopener" target="_blank">Instagram</a>
+    </div>
+  </div>
+  <p class="copy">© {{ year }} {{ site.operator }}　作品画像は各所蔵館のパブリックドメイン（CC0・Open Access）画像を使用しています。</p>
+</footer>
+<script>
+document.addEventListener('click',function(e){var a=e.target.closest('[data-ev]');if(a&&window.gtag)gtag('event',a.dataset.ev,{label:a.dataset.label||''});});
+</script>
+{% block foot %}{% endblock %}
+</body>
+</html>

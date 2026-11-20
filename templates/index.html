@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="top-hero">
+  <div class="top-hero-txt">
+    <p class="kicker">名画を、仕事と人生の言葉で。</p>
+    <h1 class="top-h1">答えのない世界で、<br>自分の答えを描く。</h1>
+    <p class="top-lead">美術の知識は、いりません。<br>一枚の絵と、それを描いた人の人生から、<br>いまのあなたの壁を越える視点を探しにいきます。</p>
+    <div class="top-btns"><a class="btn btn-main" href="{{ root }}shindan/" data-ev="shindan_start" data-label="top">いまの自分に響く一枚を探す</a></div>
+  </div>
+  <a class="top-feature" href="{{ root }}works/{{ feature.slug }}/">
+    <img src="{{ root }}static/img/{{ feature.no }}/s01.jpg" alt="{{ feature.title_ja }}（{{ feature.artist_ja }}）の細部" width="1080" height="1350">
+    <span class="top-feature-cap"><em>{{ feature.slides[0].t[0] }}<br>{{ feature.slides[0].t[1] }}</em><small>{{ feature.title_ja }}｜{{ feature.artist_ja }}</small></span>
+  </a>
+</section>
+
+<section class="sec">
+  <div class="sec-hd"><h2>悩みから、絵を探す</h2><a href="{{ root }}themes/">すべて見る →</a></div>
+  <div class="chips">
+  {% for t in themes if t.works %}
+    <a class="chip" href="{{ root }}themes/{{ t.key }}/">{{ t.name }}<span>{{ t.works|length }}</span></a>
+  {% endfor %}
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-hd"><h2>新しい読み解き</h2><a href="{{ root }}works/">一覧へ →</a></div>
+  <div class="grid">
+  {% for w in works[:6] %}{% include "card.html" %}{% endfor %}
+  </div>
+</section>
+
+<section class="sec how">
+  <h2 class="how-h">ETOIの読み方</h2>
+  <ol class="how-list">
+    <li><b>問いから入る</b>「報われない」「否定された」。いまの自分に近い悩みから、一枚を選びます。</li>
+    <li><b>絵だけを見る</b>説明を読む前に、まず何が見えるか。自分の目で感じる時間をつくります。</li>
+    <li><b>人生を知る</b>画家が何にぶつかり、どう描き続けたか。所蔵館の資料で確かめた事実だけを書きます。</li>
+    <li><b>自分に重ねる</b>答えは書きません。最後の一言を手がかりに、あなたの答えを考えてください。</li>
+  </ol>
+</section>
+
+{% include "cta.html" %}
+{% endblock %}

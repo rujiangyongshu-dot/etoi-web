@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="page-hd"><h1>{{ h1 }}</h1></section>
+<div class="prose">{{ body|safe }}</div>
+{% if show_cta %}{% include "cta.html" %}{% endif %}
+{% endblock %}

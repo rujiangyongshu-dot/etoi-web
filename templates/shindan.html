@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="page-hd">
+  <p class="kicker">3つの質問・30秒</p>
+  <h1>いまの自分に響く一枚診断</h1>
+  <p>正解はありません。直感で、いちばん近いものを選んでください。</p>
+</section>
+<div class="sd" id="sd">
+  <div class="sd-bar"><i id="sd-bar"></i></div>
+  <div id="sd-q"></div>
+</div>
+<div class="sd-res" id="sd-res" hidden></div>
+{% endblock %}
+{% block foot %}
+<script>
+(function(){
+var W={{ works_json|safe }}, T={{ themes_json|safe }}, ROOT="{{ root }}",IDX="{{ idx }}", LINE="{{ site.line_url }}", IG="{{ site.instagram }}";
+var Q=[
+ {q:"いま、いちばん近い気持ちは？",a:[["頑張っているのに、手応えがない",{mukuwarenai:2,tsuzukeru:1}],["自分のやり方を、否定された",{hitei:2}],["大事なものを、失った",{ushinau:2}],["いまの場所が、合っていない気がする",{basho:2}],["始めたいことがあるのに、踏み出せない",{chosen:2,basho:1}]]},
+ {q:"いま、いちばん欲しいものは？",a:[["続ける理由",{tsuzukeru:2}],["認められなくても進む強さ",{mukuwarenai:1,hitei:1}],["立ち直るきっかけ",{ushinau:2}],["環境を変える勇気",{basho:2}],["最初の一歩",{chosen:2}]]},
+ {q:"それは、どんな場面のことですか？",a:[["会社での仕事",{},"work"],["自分の事業・経営",{},"business"],["転職・進路など人生の選択",{},"life"],["創作・表現",{},"creative"],["人間関係",{},"relation"]]}
+];
+var i=0,S={},scene="";
+var qEl=document.getElementById('sd-q'),bar=document.getElementById('sd-bar');
+function draw(){var x=Q[i];bar.style.width=(i/Q.length*100)+'%';
+ qEl.innerHTML='<p class="sd-n">Q'+(i+1)+' / '+Q.length+'</p><h2 class="sd-qt">'+x.q+'</h2><div class="sd-opts">'+x.a.map(function(o,k){return '<button class="sd-o" data-k="'+k+'">'+o[0]+'</button>'}).join('')+'</div>';
+ qEl.querySelectorAll('.sd-o').forEach(function(b){b.onclick=function(){var o=x.a[+b.dataset.k];for(var t in o[1])S[t]=(S[t]||0)+o[1][t];if(o[2])scene=o[2];i++;i<Q.length?draw():done();}});
+ if(i===0&&window.gtag)gtag('event','shindan_start');}
+function done(){bar.style.width='100%';
+ var order=T.map(function(t){return t.key}),best=order.slice().sort(function(a,b){return (S[b]||0)-(S[a]||0)||order.indexOf(a)-order.indexOf(b)})[0];
+ var fb={chosen:'basho'};var key=best,ws=W.filter(function(w){return w.theme===key});
+ if(!ws.length){key=fb[best]||order.find(function(k){return W.some(function(w){return w.theme===k})});ws=W.filter(function(w){return w.theme===key});}
+ var t=T.find(function(x){return x.key===best}),w=ws[Math.floor(Math.random()*ws.length)];
+ if(window.gtag)gtag('event','shindan_complete',{theme:best,scene:scene});
+ document.getElementById('sd').hidden=true;document.querySelector('.page-hd').hidden=true;var r=document.getElementById('sd-res');r.hidden=false;
+ r.innerHTML='<p class="kicker">いまのあなたのテーマ</p><h2 class="sd-th">'+t.name+'</h2><p class="sd-td">'+t.desc+'</p>'+
+ '<p class="sd-for">そんなあなたに、開いてほしい一枚</p><a class="sd-card" href="'+ROOT+'works/'+w.slug+'/'+IDX+'?from=shindan" data-ev="shindan_result_click" data-label="'+w.no+'"><img src="'+ROOT+'static/img/'+w.no+'/thumb.jpg" alt=""><span><em>'+w.hook+'</em><small>'+w.title+'｜'+w.artist+'</small></span></a>'+
+ '<div class="sd-next">'+(LINE?'<a class="btn btn-line" href="'+LINE+'" target="_blank" rel="noopener" data-ev="line_click" data-label="shindan_'+best+'">「'+t.name+'」の絵を、LINEで受け取る</a>':'')+
+ '<a class="btn '+(LINE?'btn-ghost':'btn-main')+'" href="'+ROOT+'themes/'+key+'/'+IDX+'">同じテーマの絵をもっと見る</a>'+(LINE?'':'<a class="btn btn-ghost" href="'+IG+'" target="_blank" rel="noopener" data-ev="ig_click" data-label="shindan">Instagramで毎日読む</a>')+'<button class="sd-re" onclick="location.reload()">もう一度診断する</button></div>';
+ window.scrollTo({top:0,behavior:'smooth'});}
+draw();
+})();
+</script>
+{% endblock %}

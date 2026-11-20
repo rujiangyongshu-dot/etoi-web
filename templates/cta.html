@@ -1,0 +1,11 @@
+<section class="cta">
+  <p class="cta-kicker">週に一度、あなたに一枚を。</p>
+  <h2 class="cta-h">壁にぶつかったときに開く絵を、<br>ストックしておきませんか。</h2>
+  <p class="cta-p">ETOIは、名画を仕事と人生の言葉で読み解いています。新しい読み解きと、その週に考えたい問いを一つだけお届けします。</p>
+  <div class="cta-btns">
+  {% if site.line_url %}
+    <a class="btn btn-line" href="{{ site.line_url }}" data-ev="line_click" data-label="{{ cta_label|default('') }}" rel="noopener" target="_blank">LINEで受け取る（無料）</a>
+  {% endif %}
+    <a class="btn {{ 'btn-ghost' if site.line_url else 'btn-main' }}" href="{{ site.instagram }}" data-ev="ig_click" data-label="{{ cta_label|default('') }}" rel="noopener" target="_blank">Instagramでフォロー</a>
+  </div>
+</section>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rujiangyongshu-dot.github.io/etoi-web/sitemap.xml

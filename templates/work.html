@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block head %}
+<script type="application/ld+json">{{ ld|safe }}</script>
+{% endblock %}
+{% block main %}
+<article class="art">
+  <nav class="crumb"><a href="{{ root }}">ETOI</a> › <a href="{{ root }}themes/{{ w.theme }}/">{{ w.theme_name }}</a></nav>
+  <header class="art-hd">
+    <p class="art-lead">{{ w.lead }}</p>
+    <h1 class="art-h1">{{ w.slides[0].t[0] }}<br>{{ w.slides[0].t[1] }}</h1>
+    <p class="art-work">{{ w.title_ja }}<span>{{ w.artist_ja }}</span></p>
+  </header>
+
+  <figure class="art-hero">
+    <img src="{{ root }}static/img/{{ w.no }}/hero.jpg" alt="{{ w.title_ja }}（{{ w.artist_ja }}）全体" width="{{ w.hero_w }}" height="{{ w.hero_h }}">
+    <figcaption>{{ w.title_ja }}（{{ w.title_orig }}）｜{{ w.museum }}</figcaption>
+  </figure>
+
+  <div class="pause">
+    <p class="step">STEP 1　まず、絵だけを見る</p>
+    <p>説明を読む前に、10秒だけ、この絵を眺めてみてください。<br>最初に目が止まったのはどこでしたか。</p>
+  </div>
+
+  <p class="step step-c">STEP 2　細部を読む</p>
+  <div class="story">
+  {% for s in w.slides[1:-1] %}
+    <section class="beat">
+      <figure class="beat-img{{ ' is-full' if s.full else '' }}"><img src="{{ root }}static/img/{{ w.no }}/{{ s.img }}" alt="{{ w.title_ja }}の細部 {{ loop.index }}" loading="lazy"></figure>
+      <p class="beat-t">{{ s.t[0] }}<br>{{ s.t[1] }}</p>
+    </section>
+  {% endfor %}
+  </div>
+
+  <div class="more">
+    <p class="step">STEP 3　背景を知る</p>
+    {% for sec in w.sections %}
+    <h2>{{ sec.h }}</h2>
+    {% for p in sec.p %}<p>{{ p }}</p>{% endfor %}
+    {% endfor %}
+  </div>
+
+  <section class="final">
+    <p class="step">STEP 4　自分に重ねる</p>
+    <figure class="beat-img{{ ' is-full' if w.slides[-1].full else '' }}"><img src="{{ root }}static/img/{{ w.no }}/{{ w.slides[-1].img }}" alt="{{ w.title_ja }}" loading="lazy"></figure>
+    <p class="final-t">{{ w.slides[-1].t[0] }}<br>{{ w.slides[-1].t[1] }}</p>
+    <p class="final-note">答えは書きません。この言葉が、いまのあなたのどの場面に重なるか。少しだけ考えてみてください。</p>
+  </section>
+
+  <section class="data">
+    <h2>作品データ</h2>
+    <dl>
+      <dt>作品</dt><dd>{{ w.title_ja }}（{{ w.title_orig }}）</dd>
+      <dt>画家</dt><dd>{{ w.artist_ja }}（{{ w.artist_orig }}）</dd>
+      <dt>技法・寸法</dt><dd>{{ w.medium }}</dd>
+      <dt>所蔵</dt><dd>{{ w.museum }}</dd>
+      <dt>出典</dt><dd>{{ w.sources }}</dd>
+      <dt>画像</dt><dd>{{ w.credit }}</dd>
+    </dl>
+    <p class="data-note">事実は所蔵館の資料など複数の出典で確認しています。読み解きは、ETOI編集部による一つの見方です。</p>
+  </section>
+
+  {% if w.books %}
+  <section class="books">
+    <h2>この画家をもっと知る</h2>
+    <p class="pr">PR（アフィリエイトリンクを含みます）</p>
+    <ul>{% for b in w.books %}<li><a href="{{ b.url }}" rel="sponsored noopener" target="_blank" data-ev="aff_click" data-label="{{ w.no }}">{{ b.title }}</a>{% if b.note %}<span>{{ b.note }}</span>{% endif %}</li>{% endfor %}</ul>
+  </section>
+  {% endif %}
+
+  {% set cta_label = 'work_' ~ w.no %}
+  {% include "cta.html" %}
+
+  {% if related %}
+  <section class="sec">
+    <div class="sec-hd"><h2>「{{ w.theme_name }}」に開く、ほかの絵</h2></div>
+    <div class="grid">{% for w in related %}{% include "card.html" %}{% endfor %}</div>
+  </section>
+  {% endif %}
+</article>
+{% endblock %}

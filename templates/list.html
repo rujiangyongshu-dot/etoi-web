@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="page-hd">
+  {% if kicker %}<p class="kicker">{{ kicker }}</p>{% endif %}
+  <h1>{{ h1 }}</h1>
+  {% if lead %}<p>{{ lead }}</p>{% endif %}
+</section>
+{% if themes_list %}
+<div class="theme-list">
+{% for t in themes_list %}
+  <a class="theme-row{{ ' is-empty' if not t.works else '' }}" href="{{ root }}themes/{{ t.key }}/">
+    <b>{{ t.name }}</b><span>{{ t.desc }}</span><i>{{ t.works|length if t.works else '準備中' }}{{ '本' if t.works else '' }}</i>
+  </a>
+{% endfor %}
+</div>
+{% endif %}
+{% if items %}
+<div class="grid sec">{% for w in items %}{% include "card.html" %}{% endfor %}</div>
+{% elif not themes_list %}
+<p class="empty">このテーマの読み解きは準備中です。近日公開します。</p>
+{% endif %}
+{% include "cta.html" %}
+{% endblock %}
